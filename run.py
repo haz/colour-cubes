@@ -33,7 +33,7 @@ class DiceSideCol(Unique):
         self.colour = colour
 
     def __str__(self):
-        return f"{self.dice}@{self.side}={self.colour}"
+        return f"d{self.dice}:s{self.side}={self.colour}"
 
 # Proposition for a dice side to be pointing in a particular orientation
 @proposition(E)
@@ -44,7 +44,7 @@ class DiceSideDir(Unique):
         self.direction = direction
 
     def __str__(self):
-        return f"{self.dice}-pointing-{self.side}={self.direction}"
+        return f"d{self.dice}:s{self.side}={self.direction}"
 
 # Dice in a slot
 @proposition(E)
@@ -54,7 +54,7 @@ class DiceInSlot(Unique):
         self.slot = slot
 
     def __str__(self):
-        return f"d{self.dice} in s{self.slot}"
+        return f"d{self.dice} in slot-{self.slot}"
 
 
 ###############
@@ -83,17 +83,36 @@ for dice in DICE:
                 E.add_constraint(DiceSideDir(dice, side1, 'front') >> DiceSideDir(dice, side2, 'back'))
                 E.add_constraint(DiceSideDir(dice, side1, 'back') >> DiceSideDir(dice, side2, 'front'))
 
+# 1, 2, 3 must be clockwise around a corner
+cw_horizontal = ['front', 'left', 'back', 'right']
+cw_vertical = ['top', 'right', 'bottom', 'left']
+cw_straight = ['top', 'front', 'bottom', 'back']
+for dice in DICE:
+    for i in range(4):
+        E.add_constraint((DiceSideDir(dice, 1, 'top') & DiceSideDir(dice, 2, cw_horizontal[i])) >> DiceSideDir(dice, 3, cw_horizontal[(i+1)%4]))
+        E.add_constraint((DiceSideDir(dice, 1, 'bottom') & DiceSideDir(dice, 2, cw_horizontal[i])) >> DiceSideDir(dice, 3, cw_horizontal[(i+3)%4]))
+        E.add_constraint((DiceSideDir(dice, 1, 'left') & DiceSideDir(dice, 2, cw_straight[i])) >> DiceSideDir(dice, 3, cw_straight[(i+1)%4]))
+        E.add_constraint((DiceSideDir(dice, 1, 'right') & DiceSideDir(dice, 2, cw_straight[i])) >> DiceSideDir(dice, 3, cw_straight[(i+3)%4]))
+        E.add_constraint((DiceSideDir(dice, 1, 'front') & DiceSideDir(dice, 2, cw_vertical[i])) >> DiceSideDir(dice, 3, cw_vertical[(i+1)%4]))
+        E.add_constraint((DiceSideDir(dice, 1, 'back') & DiceSideDir(dice, 2, cw_vertical[i])) >> DiceSideDir(dice, 3, cw_vertical[(i+3)%4]))
+
+
+
 T = E.compile()
-E.introspect()
+# E.introspect()
 
 sol = T.solve()
-E.pprint(T, sol)
-E.introspect(sol)
-print_theory(sol)
+# E.pprint(T, sol)
+# E.introspect(sol)
+# print_theory(sol)
 
 # After compilation (and only after), you can check some of the properties
 # of your model:
 print("\nSatisfiable: %s" % T.satisfiable())
 print("# Solutions: %d" % count_solutions(T))
-print("   Solution: %s" % T.solve())
+# print("   Solution: %s" % T.solve())
+print_theory(sol)
+print()
+
+
 
