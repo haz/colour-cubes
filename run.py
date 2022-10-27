@@ -1,12 +1,12 @@
 
 from bauhaus import Encoding, proposition, constraint, print_theory
 from bauhaus.utils import count_solutions, likelihood
-from viz import print_dice
+from viz import viz_all_dice
 
 # Encoding that will store all of your constraints
 E = Encoding()
 
-DICE = [1]#, 2, 3, 4]
+DICE = [1, 2, 3, 4]
 SIDE = [1, 2, 3, 4, 5, 6]
 COLOURS = ['red', 'green', 'blue', 'yellow']
 DIRECTION = ['top', 'bottom', 'left', 'right', 'front', 'back']
@@ -72,6 +72,11 @@ for dice in DICE:
     for direction in DIRECTION:
         constraint.add_exactly_one(E, [DiceSideDir(dice, side, direction) for side in SIDE])
 
+# Each dice side must have exactly one colour
+for dice in DICE:
+    for side in SIDE:
+        constraint.add_exactly_one(E, [DiceSideCol(dice, side, colour) for colour in COLOURS])
+
 # Opposite sides must add up to 7
 for dice in DICE:
     for side1 in SIDE:
@@ -114,5 +119,5 @@ print("# Solutions: %d" % count_solutions(T))
 # print("   Solution: %s" % T.solve())
 print_theory(sol)
 print()
-print_dice(sol, 1)
-
+print(viz_all_dice(sol, DICE))
+print()
