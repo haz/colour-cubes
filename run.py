@@ -1,6 +1,7 @@
 
 from bauhaus import Encoding, proposition, constraint, print_theory
 from bauhaus.utils import count_solutions, likelihood
+from viz import print_dice
 
 # Encoding that will store all of your constraints
 E = Encoding()
@@ -33,7 +34,7 @@ class DiceSideCol(Unique):
         self.colour = colour
 
     def __str__(self):
-        return f"d{self.dice}:s{self.side}={self.colour}"
+        return f"col(d{self.dice}:s{self.side})={self.colour}"
 
 # Proposition for a dice side to be pointing in a particular orientation
 @proposition(E)
@@ -44,7 +45,7 @@ class DiceSideDir(Unique):
         self.direction = direction
 
     def __str__(self):
-        return f"d{self.dice}:s{self.side}={self.direction}"
+        return f"dir(d{self.dice}:s{self.side})={self.direction}"
 
 # Dice in a slot
 @proposition(E)
@@ -113,6 +114,5 @@ print("# Solutions: %d" % count_solutions(T))
 # print("   Solution: %s" % T.solve())
 print_theory(sol)
 print()
-
-
+print_dice(sol, 1)
 
