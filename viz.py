@@ -33,5 +33,3 @@ def viz_all_dice(sol, dices):
     dice_strings = [viz_dice(sol, d) for d in dices]
     dice_strings = [d for d in zip(*dice_strings)]
     return "\n".join(["\t".join(d) for d in dice_strings])
-    print(list(zip(dice_viz)))
-    return '\n'.join([''.join(zip([viz_dice(sol, d) for d in dices]))])
