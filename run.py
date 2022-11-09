@@ -181,7 +181,8 @@ print("# Solutions: %d" % count_solutions(T))
 # print("   Solution: %s" % T.solve())
 
 
-print_theory(sol)
+# print_theory(sol)
 print()
 print(viz_all_dice(sol, DICE))
 print()
+

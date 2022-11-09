@@ -30,11 +30,16 @@ def viz_dice(sol, dice):
     ]
 
 def extract_dice_order(sol, dices):
+    """Gets the order of the dice in the slots from the solution"""
     dice_order = {}
     for k in sol:
+        # If it is a slot proposition and the proposition is set to true
         if 'slot(d' in str(k) and sol[k]:
+            # Assign the dice that is in the slot
             dice_order[str(k).split('=')[1]] = str(k)[6]
+    # Return the dice in the order of the slots
     return [dice_order[str(s)] for s in range(1, len(dices)+1)]
+
 
 def viz_all_dice(sol, dices):
     dice_order = extract_dice_order(sol, dices)
@@ -42,8 +47,11 @@ def viz_all_dice(sol, dices):
     dice_strings = [d for d in zip(*dice_strings)]
     return "\n".join(["\t".join(d) for d in dice_strings])
 
+
+
 def dump_dice_details(sol, dice):
-    for k in sol:
-        if f'd{dice}' in str(k) and sol[k]:
-            print(k)
+    """Prints out the details of a particular dice in the solution"""
+    for var in sol:
+        if (f'd{dice}' in str(var)) and sol[var]:
+            print(var)
 
