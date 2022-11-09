@@ -29,7 +29,21 @@ def viz_dice(sol, dice):
         f"\t {f('back')}  "
     ]
 
+def extract_dice_order(sol, dices):
+    dice_order = {}
+    for k in sol:
+        if 'slot(d' in str(k) and sol[k]:
+            dice_order[str(k).split('=')[1]] = str(k)[6]
+    return [dice_order[str(s)] for s in range(1, len(dices)+1)]
+
 def viz_all_dice(sol, dices):
-    dice_strings = [viz_dice(sol, d) for d in dices]
+    dice_order = extract_dice_order(sol, dices)
+    dice_strings = [viz_dice(sol, d) for d in dice_order]
     dice_strings = [d for d in zip(*dice_strings)]
     return "\n".join(["\t".join(d) for d in dice_strings])
+
+def dump_dice_details(sol, dice):
+    for k in sol:
+        if f'd{dice}' in str(k) and sol[k]:
+            print(k)
+
