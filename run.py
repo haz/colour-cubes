@@ -5,7 +5,7 @@ from bauhaus.utils import count_solutions, likelihood
 from nnf import config
 config.sat_backend = "kissat"
 
-from viz import viz_all_dice
+from viz import viz_all_dice, dump_dice_details
 
 from diceconfigs import CONFIG as DICE_CONFIG
 
@@ -139,13 +139,14 @@ for slot in SLOTS:
 # If a dice of a particular configuration is in a slot, then the colour facing each direction is defined
 for dice in DICE:
     for slot in SLOTS:
-        for col in COLOURS:
-            for direction in set(DIRECTION) - set(['left', 'right']):
-                E.add_constraint((DiceSideCol(dice, direction, col) & DiceSideDir(dice, side, direction) & DiceInSlot(dice, slot)) >> BoxColour(slot, direction, col))
+        for side in SIDE:
+            for col in COLOURS:
+                for direction in set(DIRECTION) - set(['left', 'right']):
+                    E.add_constraint((DiceSideCol(dice, side, col) & DiceSideDir(dice, side, direction) & DiceInSlot(dice, slot)) >> BoxColour(slot, direction, col))
 
 # A box side colour must have exactly one colour
 for slot in SLOTS:
-    for direction in DIRECTION:
+    for direction in set(DIRECTION) - set(['left', 'right']):
         constraint.add_exactly_one(E, [BoxColour(slot, direction, colour) for colour in COLOURS])
 
 
