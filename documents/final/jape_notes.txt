@@ -1,0 +1,27 @@
+
+¬P1R ∨ ¬P2R,
+¬P1G ∨ ¬P2G,
+¬P1B ∨ ¬P2B,
+¬P1R ∨ ¬P3R,
+¬P1G ∨ ¬P3G,
+¬P1B ∨ ¬P3B,
+¬P2R ∨ ¬P3R,
+¬P2G ∨ ¬P3G,
+¬P2B ∨ ¬P3B,
+P1R ∨ P1G ∨ P1B,
+P2R ∨ P2G ∨ P2B,
+P3R ∨ P3G ∨ P3B,
+P1R,
+P2G ⊢ P3B
+
+
+
+¬P1R ∨ ¬P2R,
+¬P1G ∨ ¬P2G,
+¬P1R ∨ ¬P3R,
+¬P1G ∨ ¬P3G,
+¬P2R ∨ ¬P3R,
+¬P2G ∨ ¬P3G,
+P1R ∨ P1G,
+P2R ∨ P2G,
+P3R ∨ P3G ⊢ <bot>
